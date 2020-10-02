@@ -19,7 +19,7 @@ Contract.make {
 
         body(
                 "firstName": anyAlphaUnicode(),
-                "LastName": anyAlphaUnicode(),
+                "lastName": anyAlphaUnicode(),
                 "aadharNo": anyPositiveInt()
         )
     }
@@ -32,7 +32,7 @@ Contract.make {
         body(
                 "id": "${anyPositiveInt()}",
                 "firstName": $(fromRequest().body('$.firstName')),
-                "LastName": $(fromRequest().body('$.LastName')),
+                "LastName": $(fromRequest().body('$.lastName')),
                 "aadharNo": $(fromRequest().body('$.aadharNo')),
                 "status": false,
                 "message": "New employee created"

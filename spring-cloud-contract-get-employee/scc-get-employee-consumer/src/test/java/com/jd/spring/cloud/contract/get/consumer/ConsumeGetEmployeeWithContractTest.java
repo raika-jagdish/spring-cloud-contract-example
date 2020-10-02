@@ -58,7 +58,7 @@ public class ConsumeGetEmployeeWithContractTest {
         System.out.println("response.getBody().toString(): "+ response.getBody());
 
         // then:
-        assertThat(response.getStatusCode()).isEqualTo(404);
+        assertThat(response.getStatusCode()).isEqualTo(200);
         assertThat(response.getHeaders().get("Content-Type").contains("application/json.*"));
 
         System.out.println(response.getBody());

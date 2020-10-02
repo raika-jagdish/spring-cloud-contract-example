@@ -62,4 +62,16 @@ public class Employee{
 	public void setAadharNo(String aadharNo) {
 		this.aadharNo = aadharNo;
 	}
+
+	@Override
+	public String toString() {
+		return "Employee{" +
+				"id='" + id + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", aadharNo='" + aadharNo + '\'' +
+				", status=" + status +
+				", message='" + message + '\'' +
+				'}';
+	}
 }

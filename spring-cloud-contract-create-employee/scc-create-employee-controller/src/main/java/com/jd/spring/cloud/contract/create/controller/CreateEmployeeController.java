@@ -30,7 +30,7 @@ public class CreateEmployeeController {
 	{
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers=new HttpHeaders();
-		headers.add("contentType","application/json");
+		headers.add("Content-Type","application/json");
 		headers.add("accept","application/json");
 
 		ResponseEntity<Employee> response = restTemplate

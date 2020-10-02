@@ -23,7 +23,7 @@ Contract.make {
     }
 
     response {
-        status NOT_FOUND()
+        status OK()
         headers {
             contentType applicationJson()
         }
