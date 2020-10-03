@@ -32,8 +32,8 @@ public class ConsumeCreateEmployeeWithApplicationTest {
     @LocalServerPort
     private int port;
 
-    @Value("${app.createEmployeeURI:http://localhost}")
-    String createEmployeeURI;
+    @Value("${app.createEmployeeBaseURI:http://localhost}")
+    String createEmployeeBaseURI;
 
     @Value("${app.createEmployeeBasePath:/employee-management/employee}")
     String createEmployeeBasePath;
@@ -42,14 +42,14 @@ public class ConsumeCreateEmployeeWithApplicationTest {
     public void setup() {
 
         RestAssured.useRelaxedHTTPSValidation();
-        RestAssured.baseURI = createEmployeeURI;
+        RestAssured.baseURI = createEmployeeBaseURI;
         if (RestAssured.baseURI.contains("localhost")) {
             RestAssured.port = port;
         }
     }
 
     @Test
-    public void validate_shouldCreateEmployeeProfile() throws Exception {
+    public void testShouldCreateNewEmployee() throws Exception {
         // given:
         RequestSpecification request = given()
                 .header("Content-Type", "application/json")
@@ -77,7 +77,7 @@ public class ConsumeCreateEmployeeWithApplicationTest {
     }
 
     @Test
-    public void validate_shouldReturnAlreadyCreateEmployeeProfile() throws Exception {
+    public void testShouldReturnExistingEmployee() throws Exception {
         // given:
         RequestSpecification request = given()
                 .header("Content-Type", "application/json")

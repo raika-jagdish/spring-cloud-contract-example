@@ -27,8 +27,8 @@ public abstract class BaseClass {
     @LocalServerPort
     private int port;
 
-    @Value("${app.employeeURI:http://localhost}")
-    String employeeURI;
+    @Value("${app.employeeBaseURI:http://localhost}")
+    String employeeBaseURI;
 
     @Value("${app.employeeBasePath:/employee-management/employee}")
     String employeeBasePath;
@@ -36,7 +36,7 @@ public abstract class BaseClass {
     @Before
     public void setup() {
         RestAssured.useRelaxedHTTPSValidation();
-        RestAssured.baseURI = employeeURI;
+        RestAssured.baseURI = employeeBaseURI;
         if (RestAssured.baseURI.contains("localhost")) {
             RestAssured.port = port;
         }
