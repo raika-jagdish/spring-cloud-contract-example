@@ -11,7 +11,7 @@ Contract.make {
 
         urlPath("/employee-management/employee/")
         urlPath($(
-                consumer(regex("/employee-management/employee/[0][0-9]{1,}"))
+                consumer(regex("/employee-management/employee/[0][0-9]{0,}"))
                 , producer("/employee-management/employee/0123456789")
         )){
         }

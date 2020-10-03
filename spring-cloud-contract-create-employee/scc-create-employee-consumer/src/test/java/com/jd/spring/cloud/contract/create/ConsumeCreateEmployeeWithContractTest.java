@@ -59,16 +59,16 @@ public class ConsumeCreateEmployeeWithContractTest {
         System.out.println("response.getBody().toString(): "+ response.getBody());
 
         // then:
-        assertThat(response.getStatusCode()).isEqualTo(201);
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
         assertThat(response.getHeaders().get("Content-Type").contains("application/json.*"));
 
         System.out.println(response.getBody());
 
         // and:
         DocumentContext parsedJson = JsonPath.parse(response.getBody());
-        assertThatJson(parsedJson).field("['id']").matches("([1-9]\\\\d*)");
-        assertThatJson(parsedJson).field("['firstName']").matches("[\\S\\s]+");
-        assertThatJson(parsedJson).field("['LastName']").matches("[\\S\\s]+");
+        assertThatJson(parsedJson).field("['id']").matches("[1-9][0-9]{0,}");
+        assertThatJson(parsedJson).field("['firstName']").matches("[\\p{L}]*");
+        assertThatJson(parsedJson).field("['lastName']").matches("[\\p{L}]*");
         assertThatJson(parsedJson).field("['identityCardNo']").isEqualTo(1234567890);
         assertThatJson(parsedJson).field("['status']").matches("EMPLOYEE_FOUND");
     }
@@ -90,24 +90,24 @@ public class ConsumeCreateEmployeeWithContractTest {
         Employee emp = new Employee();
         emp.setFirstName("Jagdish");
         emp.setLastName("Raika");
-        emp.setIdentityCardNo("1234567890");
+        emp.setIdentityCardNo("0123456789");
         ResponseEntity<String> response =new RestTemplate()
                 .exchange(URL, POST, new HttpEntity<>(emp,headers), String.class);
 
         System.out.println("response.getBody().toString(): "+ response.getBody());
 
         // then:
-        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertThat(response.getStatusCodeValue()).isEqualTo(201);
         assertThat(response.getHeaders().get("Content-Type").contains("application/json.*"));
 
         System.out.println(response.getBody());
 
         // and:
         DocumentContext parsedJson = JsonPath.parse(response.getBody());
-        assertThatJson(parsedJson).field("['id']").matches("([1-9]\\\\d*)");
+        assertThatJson(parsedJson).field("['id']").matches("[1-9][0-9]{0,}");
         assertThatJson(parsedJson).field("['firstName']").matches("Jagdish");
-        assertThatJson(parsedJson).field("['LastName']").matches("Raika");
-        assertThatJson(parsedJson).field("['identityCardNo']").isEqualTo("01234567890");
+        assertThatJson(parsedJson).field("['lastName']").matches("Raika");
+        assertThatJson(parsedJson).field("['identityCardNo']").isEqualTo("0123456789");
         assertThatJson(parsedJson).field("['status']").matches("NEW_EMPLOYEE_CREATED");
     }
 

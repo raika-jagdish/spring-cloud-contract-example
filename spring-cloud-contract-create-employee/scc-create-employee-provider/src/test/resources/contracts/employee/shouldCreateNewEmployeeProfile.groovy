@@ -21,20 +21,20 @@ Contract.make {
                 "firstName": anyAlphaUnicode(),
                 "lastName": anyAlphaUnicode(),
                 "identityCardNo": $(
-                        consumer(regex("[0][0-9]{1,}"))
+                        consumer(regex("[0][0-9]{0,}"))
                         , producer("0123456789"))
         )
     }
 
     response {
-        status OK()
+        status CREATED()
         headers {
             contentType applicationJson()
         }
         body(
-                "id": "${anyPositiveInt()}",
-                "firstName": $(anyNonEmptyString()),
-                "lastName": $(anyNonEmptyString()),
+                "id": "${(regex('[1-9][0-9]{0,}'))}",
+                "firstName": $(fromRequest().body('$.firstName')),
+                "lastName": $(fromRequest().body('$.lastName')),
                 "identityCardNo": $(fromRequest().body('$.identityCardNo')),
                 "status": "NEW_EMPLOYEE_CREATED"
         )

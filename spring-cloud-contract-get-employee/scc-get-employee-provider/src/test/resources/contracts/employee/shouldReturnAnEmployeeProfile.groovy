@@ -11,7 +11,7 @@ Contract.make {
 
         urlPath("/employee-management/employee/")
         urlPath($(
-                consumer(regex("/employee-management/employee/[1-9][0-9]{1,}"))
+                consumer(regex("/employee-management/employee/[1-9][0-9]{0,}"))
                 , producer("/employee-management/employee/1234567890")
         )){
         }
@@ -28,9 +28,9 @@ Contract.make {
             contentType applicationJson()
         }
         body(
-                "id": "${anyPositiveInt()}",
-                "firstName": "${anyAlphaUnicode()}",
-                "lastName": "${anyAlphaUnicode()}",
+                "id": "${(regex('[1-9][0-9]{0,}'))}",
+                "firstName": anyAlphaUnicode(),
+                "lastName": anyAlphaUnicode(),
                 "identityCardNo": fromRequest().path(2),
                 "status": "EMPLOYEE_FOUND"
         )

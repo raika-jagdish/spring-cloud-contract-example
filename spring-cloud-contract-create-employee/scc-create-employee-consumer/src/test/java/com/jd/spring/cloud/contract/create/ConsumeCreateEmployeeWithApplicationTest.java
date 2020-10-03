@@ -21,10 +21,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"location.getEmployee.url=http://localhost:8090/employee-management"})
+        classes = SccCreateEmployeeControllerApplication.class,
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+        )
 @AutoConfigureStubRunner(
-        ids = {"com.jd.spring:scc-get-employee-provider:8090"}
+        ids = {"com.jd.spring:scc-get-employee-provider:8180"}
         , stubsMode = StubRunnerProperties.StubsMode.LOCAL)
 public class ConsumeCreateEmployeeWithApplicationTest {
 
@@ -53,11 +54,11 @@ public class ConsumeCreateEmployeeWithApplicationTest {
         RequestSpecification request = given()
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")
-                .body("{\"firstName\":\"Jagdish\",\"LastName\":\"Raika\",\"identityCardNo\":1234567890}");
+                .body(
+                        "{\"firstName\":\"Jagdish\",\"lastName\":\"Raika\",\"identityCardNo\":\"0123456789\"}");
 
         // when:
         Response response = given().spec(request)
-                .queryParam("salesChannel", "channel")
                 .post(createEmployeeBasePath);
 
         // then:
@@ -68,10 +69,10 @@ public class ConsumeCreateEmployeeWithApplicationTest {
 
         // and:
         DocumentContext parsedJson = JsonPath.parse(response.getBody().asString());
-        assertThatJson(parsedJson).field("['id']").matches("([1-9]\\\\d*)");
+        assertThatJson(parsedJson).field("['id']").matches("[1-9][0-9]{0,}");
         assertThatJson(parsedJson).field("['firstName']").matches("Jagdish");
-        assertThatJson(parsedJson).field("['LastName']").matches("Raika");
-        assertThatJson(parsedJson).field("['aadharNo']").isEqualTo("01234567890");
+        assertThatJson(parsedJson).field("['lastName']").matches("Raika");
+        assertThatJson(parsedJson).field("['identityCardNo']").isEqualTo("0123456789");
         assertThatJson(parsedJson).field("['status']").matches("NEW_EMPLOYEE_CREATED");
     }
 
@@ -81,11 +82,11 @@ public class ConsumeCreateEmployeeWithApplicationTest {
         RequestSpecification request = given()
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")
-                .body("{\"firstName\":\"Jagdish\",\"LastName\":\"Raika\",\"identityCardNo\":0123456789}");
+                .body(
+                        "{\"firstName\":\"Jagdish\",\"lastName\":\"Raika\",\"identityCardNo\":\"1234567890\"}");
 
         // when:
         Response response = given().spec(request)
-                .queryParam("salesChannel", "channel")
                 .post(createEmployeeBasePath);
 
         // then:
@@ -96,9 +97,9 @@ public class ConsumeCreateEmployeeWithApplicationTest {
 
         // and:
         DocumentContext parsedJson = JsonPath.parse(response.getBody().asString());
-        assertThatJson(parsedJson).field("['id']").matches("([1-9]\\\\d*)");
-        assertThatJson(parsedJson).field("['firstName']").matches("[\\S\\s]+");
-        assertThatJson(parsedJson).field("['LastName']").matches("[\\S\\s]+");
+        assertThatJson(parsedJson).field("['id']").matches("[1-9][0-9]{0,}");
+        assertThatJson(parsedJson).field("['firstName']").matches("[\\p{L}]*");
+        assertThatJson(parsedJson).field("['lastName']").matches("[\\p{L}]*");
         assertThatJson(parsedJson).field("['identityCardNo']").isEqualTo("1234567890");
         assertThatJson(parsedJson).field("['status']").matches("EMPLOYEE_FOUND");
     }
