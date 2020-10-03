@@ -4,7 +4,7 @@ import org.springframework.cloud.contract.spec.Contract
 
 
 Contract.make {
-    description "should return already created employee profile for given details"
+    description "should create an employee profile for given details"
 
     request {
         method(POST())
@@ -21,20 +21,20 @@ Contract.make {
                 "firstName": anyAlphaUnicode(),
                 "lastName": anyAlphaUnicode(),
                 "identityCardNo": $(
-                        consumer(regex("[0][0-9]{1,}"))
-                        , producer("0123456789"))
+                        consumer(regex("[1-9][0-9]{1,}"))
+                        , producer("1234567890"))
         )
     }
 
     response {
-        status OK()
+        status CREATED()
         headers {
             contentType applicationJson()
         }
         body(
                 "id": "${anyPositiveInt()}",
-                "firstName": $(anyNonEmptyString()),
-                "lastName": $(anyNonEmptyString()),
+                "firstName": $(fromRequest().body('$.firstName')),
+                "lastName": $(fromRequest().body('$.lastName')),
                 "identityCardNo": $(fromRequest().body('$.identityCardNo')),
                 "status": "EMPLOYEE_FOUND"
         )

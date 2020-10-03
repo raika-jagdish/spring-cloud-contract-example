@@ -50,10 +50,10 @@ public class ConsumeGetEmployeeWithContractTest {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", APPLICATION_JSON_VALUE);
         headers.set("Content-Type", APPLICATION_JSON_VALUE);
-        Employee emp = new Employee();
-        emp.setAadharNo("1234567890");
+        Employee employee = new Employee();
+        employee.setIdentityCardNo("1234567890");
         ResponseEntity<String> response =new RestTemplate()
-                .exchange(URL, GET, new HttpEntity<>(emp,headers), String.class);
+                .exchange(URL, GET, new HttpEntity<>(employee,headers), String.class);
 
         System.out.println("response.getBody().toString(): "+ response.getBody());
 
@@ -65,9 +65,8 @@ public class ConsumeGetEmployeeWithContractTest {
 
         // and:
         DocumentContext parsedJson = JsonPath.parse(response.getBody());
-        assertThatJson(parsedJson).field("['aadharNo']").isEqualTo(1234567890);
-        assertThatJson(parsedJson).field("['status']").matches("(false)");
-        assertThatJson(parsedJson).field("['message']").matches("Employee not found");
+        assertThatJson(parsedJson).field("['identityCardNo']").isEqualTo(1234567890);
+        assertThatJson(parsedJson).field("['message']").matches("EMPLOYEE_FOUND");
     }
 
     @Test
@@ -85,10 +84,10 @@ public class ConsumeGetEmployeeWithContractTest {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", APPLICATION_JSON_VALUE);
         headers.set("Content-Type", APPLICATION_JSON_VALUE);
-        Employee emp = new Employee();
-        emp.setAadharNo("0123456789");
+        Employee employee = new Employee();
+        employee.setIdentityCardNo("0123456789");
         ResponseEntity<String> response =new RestTemplate()
-                .exchange(URL, GET, new HttpEntity<>(emp,headers), String.class);
+                .exchange(URL, GET, new HttpEntity<>(employee,headers), String.class);
 
         System.out.println("response.getBody().toString(): "+ response.getBody());
 
@@ -100,9 +99,7 @@ public class ConsumeGetEmployeeWithContractTest {
 
         // and:
         DocumentContext parsedJson = JsonPath.parse(response.getBody());
-        assertThatJson(parsedJson).field("['aadharNo']").isEqualTo("0123456789");
-        assertThatJson(parsedJson).field("['status']").matches("(false)");
-        assertThatJson(parsedJson).field("['message']").matches("Employee not found");
+        assertThatJson(parsedJson).field("['status']").matches("EMPLOYEE_NOT_FOUND");
     }
 
     @SpringBootConfiguration

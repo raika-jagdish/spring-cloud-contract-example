@@ -53,7 +53,7 @@ public class ConsumeCreateEmployeeWithApplicationTest {
         RequestSpecification request = given()
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")
-                .body("{\"firstName\":\"Jagdish\",\"LastName\":\"Raika\",\"aadharNo\":1234567890}");
+                .body("{\"firstName\":\"Jagdish\",\"LastName\":\"Raika\",\"identityCardNo\":1234567890}");
 
         // when:
         Response response = given().spec(request)
@@ -71,8 +71,35 @@ public class ConsumeCreateEmployeeWithApplicationTest {
         assertThatJson(parsedJson).field("['id']").matches("([1-9]\\\\d*)");
         assertThatJson(parsedJson).field("['firstName']").matches("Jagdish");
         assertThatJson(parsedJson).field("['LastName']").matches("Raika");
-        assertThatJson(parsedJson).field("['aadharNo']").isEqualTo(1234567890);
-        assertThatJson(parsedJson).field("['status']").matches("(false)");
-        assertThatJson(parsedJson).field("['message']").matches("New employee created");
+        assertThatJson(parsedJson).field("['aadharNo']").isEqualTo("01234567890");
+        assertThatJson(parsedJson).field("['status']").matches("NEW_EMPLOYEE_CREATED");
+    }
+
+    @Test
+    public void validate_shouldReturnAlreadyCreateEmployeeProfile() throws Exception {
+        // given:
+        RequestSpecification request = given()
+                .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
+                .body("{\"firstName\":\"Jagdish\",\"LastName\":\"Raika\",\"identityCardNo\":0123456789}");
+
+        // when:
+        Response response = given().spec(request)
+                .queryParam("salesChannel", "channel")
+                .post(createEmployeeBasePath);
+
+        // then:
+        assertThat(response.statusCode()).isEqualTo(200);
+        assertThat(response.header("Content-Type")).matches("application/json.*");
+
+        System.out.println(response.getBody().asString());
+
+        // and:
+        DocumentContext parsedJson = JsonPath.parse(response.getBody().asString());
+        assertThatJson(parsedJson).field("['id']").matches("([1-9]\\\\d*)");
+        assertThatJson(parsedJson).field("['firstName']").matches("[\\S\\s]+");
+        assertThatJson(parsedJson).field("['LastName']").matches("[\\S\\s]+");
+        assertThatJson(parsedJson).field("['identityCardNo']").isEqualTo("1234567890");
+        assertThatJson(parsedJson).field("['status']").matches("EMPLOYEE_FOUND");
     }
 }

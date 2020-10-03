@@ -29,8 +29,8 @@ Contract.make {
         }
         body(
                 "id": "${anyPositiveInt()}",
-                "firstName": "FirstName",
-                "lastName": "LastName",
+                "firstName": "${anyAlphaUnicode()}",
+                "lastName": "${anyAlphaUnicode()}",
                 "identityCardNo": fromRequest().path(2),
                 "status": "EMPLOYEE_FOUND"
         )

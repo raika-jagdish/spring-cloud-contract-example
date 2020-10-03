@@ -36,7 +36,7 @@ public class ConsumeCreateEmployeeWithContractTest {
     StubFinder stubFinder;
 
     @Test
-    public void testCreateEmployeeUsingStub() throws Exception {
+    public void testGetExistingEmployeeUsingStub() throws Exception {
         // expect: 'WireMocks are running'
         then(stubFinder.findStubUrl("com.jd.spring", "scc-create-employee-provider")).isNotNull();
 
@@ -52,7 +52,7 @@ public class ConsumeCreateEmployeeWithContractTest {
         Employee emp = new Employee();
         emp.setFirstName("Jagdish");
         emp.setLastName("Raika");
-        emp.setAadharNo("1234567890");
+        emp.setIdentityCardNo("1234567890");
         ResponseEntity<String> response =new RestTemplate()
                 .exchange(URL, POST, new HttpEntity<>(emp,headers), String.class);
 
@@ -67,11 +67,48 @@ public class ConsumeCreateEmployeeWithContractTest {
         // and:
         DocumentContext parsedJson = JsonPath.parse(response.getBody());
         assertThatJson(parsedJson).field("['id']").matches("([1-9]\\\\d*)");
+        assertThatJson(parsedJson).field("['firstName']").matches("[\\S\\s]+");
+        assertThatJson(parsedJson).field("['LastName']").matches("[\\S\\s]+");
+        assertThatJson(parsedJson).field("['identityCardNo']").isEqualTo(1234567890);
+        assertThatJson(parsedJson).field("['status']").matches("EMPLOYEE_FOUND");
+    }
+
+    @Test
+    public void testCreateNewEmployeeUsingStub() throws Exception {
+        // expect: 'WireMocks are running'
+        then(stubFinder.findStubUrl("com.jd.spring", "scc-create-employee-provider")).isNotNull();
+
+        // and: 'Stub is running'
+        then(stubFinder.findAllRunningStubs().isPresent("scc-create-employee-provider")).isTrue();
+
+        // and: 'Stubs were registered and make an actual call to the wiremock stub'
+        String URL = stubFinder.findStubUrl("scc-create-employee-provider").toString() + "/employee-management/employee";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", APPLICATION_JSON_VALUE);
+        headers.set("Content-Type", APPLICATION_JSON_VALUE);
+        Employee emp = new Employee();
+        emp.setFirstName("Jagdish");
+        emp.setLastName("Raika");
+        emp.setIdentityCardNo("1234567890");
+        ResponseEntity<String> response =new RestTemplate()
+                .exchange(URL, POST, new HttpEntity<>(emp,headers), String.class);
+
+        System.out.println("response.getBody().toString(): "+ response.getBody());
+
+        // then:
+        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertThat(response.getHeaders().get("Content-Type").contains("application/json.*"));
+
+        System.out.println(response.getBody());
+
+        // and:
+        DocumentContext parsedJson = JsonPath.parse(response.getBody());
+        assertThatJson(parsedJson).field("['id']").matches("([1-9]\\\\d*)");
         assertThatJson(parsedJson).field("['firstName']").matches("Jagdish");
         assertThatJson(parsedJson).field("['LastName']").matches("Raika");
-        assertThatJson(parsedJson).field("['aadharNo']").isEqualTo(1234567890);
-        assertThatJson(parsedJson).field("['status']").matches("(false)");
-        assertThatJson(parsedJson).field("['message']").matches("New employee created");
+        assertThatJson(parsedJson).field("['identityCardNo']").isEqualTo("01234567890");
+        assertThatJson(parsedJson).field("['status']").matches("NEW_EMPLOYEE_CREATED");
     }
 
     @SpringBootConfiguration
