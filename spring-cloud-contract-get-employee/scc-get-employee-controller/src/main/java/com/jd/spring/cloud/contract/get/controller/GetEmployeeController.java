@@ -21,21 +21,17 @@ public class GetEmployeeController {
 	@Autowired
 	private DBRepository dbRepository;
 
-	@RequestMapping(value="/employee/{aadharNo}", method = RequestMethod.GET)
-	public ResponseEntity<Employee> getEmployee(@PathVariable String aadharNo)
+	@RequestMapping(value="/employee/{identityCardNo}", method = RequestMethod.GET)
+	public ResponseEntity<Employee> getEmployee(@PathVariable String identityCardNo)
 	{
-
-		Random random = new Random();
-		if (random.nextBoolean()){
-			return new ResponseEntity<Employee>(dbRepository.getEmployee(aadharNo), HttpStatus.OK);
+		if (!identityCardNo.startsWith("0")){
+			return new ResponseEntity<Employee>(dbRepository.getEmployee(identityCardNo), HttpStatus.OK);
 		}
 
-		Employee emp = new Employee();
-		emp.setAadharNo(aadharNo);
-		emp.setStatus(false);
-		emp.setMessage("Employee not found");
+		Employee employee = new Employee();
+		employee.setStatus("EMPLOYEE_NOT_FOUND");
 
-		return new ResponseEntity<Employee>(emp, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Employee>(employee, HttpStatus.OK);
 
 	}
 }

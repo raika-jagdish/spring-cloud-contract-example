@@ -6,18 +6,17 @@ import java.util.Random;
 
 public class DBRepository {
 
-    public Employee getEmployee(String aadharNo)
+    public Employee getEmployee(String identityCardNo)
     {
-        Employee emp = new Employee();
+        Employee employee = new Employee();
 
         String id= String.valueOf(Math.abs(new Random().nextInt()));
-        emp.setId(id);
-        emp.setAadharNo(aadharNo);
-        emp.setFirstName("FirstName");
-        emp.setLastName("LastName");
-        emp.setStatus(true);
-        emp.setMessage("Employee already present");
+        employee.setId(id);
+        employee.setIdentityCardNo(identityCardNo);
+        employee.setFirstName("FirstName");
+        employee.setLastName("LastName");
+        employee.setStatus("EMPLOYEE_FOUND");
 
-        return emp;
+        return employee;
     }
 }

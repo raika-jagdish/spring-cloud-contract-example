@@ -36,7 +36,7 @@ public class ConsumeGetEmployeeWithContractTest {
     StubFinder stubFinder;
 
     @Test
-    public void testGetEmployeeUsingStub() throws Exception {
+    public void testGetPresentEmployeeUsingStub() throws Exception {
 
         // expect: 'WireMocks are running'
         then(stubFinder.findStubUrl("com.jd.spring", "scc-get-employee-provider")).isNotNull();
@@ -66,6 +66,41 @@ public class ConsumeGetEmployeeWithContractTest {
         // and:
         DocumentContext parsedJson = JsonPath.parse(response.getBody());
         assertThatJson(parsedJson).field("['aadharNo']").isEqualTo(1234567890);
+        assertThatJson(parsedJson).field("['status']").matches("(false)");
+        assertThatJson(parsedJson).field("['message']").matches("Employee not found");
+    }
+
+    @Test
+    public void testGetNotPresentEmployeeUsingStub() throws Exception {
+
+        // expect: 'WireMocks are running'
+        then(stubFinder.findStubUrl("com.jd.spring", "scc-get-employee-provider")).isNotNull();
+
+        // and: 'Stub is running'
+        then(stubFinder.findAllRunningStubs().isPresent("scc-get-employee-provider")).isTrue();
+
+        // and: 'Stubs were registered and make an actual call to the wiremock stub'
+        String URL = stubFinder.findStubUrl("scc-get-employee-provider").toString() + "/employee-management/employee";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", APPLICATION_JSON_VALUE);
+        headers.set("Content-Type", APPLICATION_JSON_VALUE);
+        Employee emp = new Employee();
+        emp.setAadharNo("0123456789");
+        ResponseEntity<String> response =new RestTemplate()
+                .exchange(URL, GET, new HttpEntity<>(emp,headers), String.class);
+
+        System.out.println("response.getBody().toString(): "+ response.getBody());
+
+        // then:
+        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertThat(response.getHeaders().get("Content-Type").contains("application/json.*"));
+
+        System.out.println(response.getBody());
+
+        // and:
+        DocumentContext parsedJson = JsonPath.parse(response.getBody());
+        assertThatJson(parsedJson).field("['aadharNo']").isEqualTo("0123456789");
         assertThatJson(parsedJson).field("['status']").matches("(false)");
         assertThatJson(parsedJson).field("['message']").matches("Employee not found");
     }

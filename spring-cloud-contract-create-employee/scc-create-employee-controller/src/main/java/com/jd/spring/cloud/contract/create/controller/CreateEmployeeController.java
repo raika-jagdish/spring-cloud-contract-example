@@ -34,9 +34,9 @@ public class CreateEmployeeController {
 		headers.add("accept","application/json");
 
 		ResponseEntity<Employee> response = restTemplate
-				.exchange(location+"/employee/"+employee.getAadharNo(), GET, new HttpEntity<>(headers), Employee.class);
+				.exchange(location+"/employee/"+employee.getIdentityCardNo(), GET, new HttpEntity<>(headers), Employee.class);
 
-		if(response.getBody().getStatus()==true){
+		if("EMPLOYEE_FOUND".equals(response.getBody().getStatus())){
 
 			return response;
 		}

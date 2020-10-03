@@ -8,25 +8,15 @@ public class Employee{
 
 	private String lastName;
 
-	private String aadharNo;
+	private String identityCardNo;
 
-	private Boolean status;
+	private String status;
 
-	public String message;
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public Boolean getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -43,10 +33,6 @@ public class Employee{
 		return lastName;
 	}
 
-	public String getAadharNo() {
-		return aadharNo;
-	}
-
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -59,7 +45,22 @@ public class Employee{
 		this.lastName = lastName;
 	}
 
-	public void setAadharNo(String aadharNo) {
-		this.aadharNo = aadharNo;
+	public String getIdentityCardNo() {
+		return identityCardNo;
+	}
+
+	public void setIdentityCardNo(String identityCardNo) {
+		this.identityCardNo = identityCardNo;
+	}
+
+	@Override
+	public String toString() {
+		return "Employee{" +
+				"id='" + id + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", identityCardNo='" + identityCardNo + '\'' +
+				", status=" + status +
+				'}';
 	}
 }

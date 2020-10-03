@@ -10,8 +10,7 @@ public class DBRepository {
     {
         String id= String.valueOf(Math.abs(new Random().nextInt()));
         emp.setId(id);
-        emp.setStatus(false);
-        emp.setMessage("New employee created");
+        emp.setStatus("NEW_EMPLOYEE_CREATED");
 
         return emp;
     }
