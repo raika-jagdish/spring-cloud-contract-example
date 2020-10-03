@@ -37,7 +37,7 @@
             </dependency>
             <dependency>
                 <groupId>com.jd.spring</groupId>
-                <artifactId>scc-get-employee-controller</artifactId>
+                <artifactId>get-employee-application</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
             </dependency>
@@ -52,9 +52,9 @@
     </dependencyManagement>
 
 <modules>
-    <module>scc-get-employee-controller</module>
-    <module>scc-get-employee-provider</module>
-    <module>scc-get-employee-consumer</module>
+    <module>get-employee-application</module>
+    <module>get-employee-test-provider-contract</module>
+    <module>get-employee-test-consumer-contract</module>
 </modules>
 
 </project>
