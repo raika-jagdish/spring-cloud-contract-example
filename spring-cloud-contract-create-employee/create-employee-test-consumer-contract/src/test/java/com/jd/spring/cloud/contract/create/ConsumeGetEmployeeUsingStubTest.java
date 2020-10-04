@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureStubRunner(
         ids = {"com.jd.spring:get-employee-test-provider-contract:8180"}
         , stubsMode = StubRunnerProperties.StubsMode.LOCAL)
-public class ConsumeCreateEmployeeWithApplicationTest {
+public class ConsumeGetEmployeeUsingStubTest {
 
     @LocalServerPort
     private int port;

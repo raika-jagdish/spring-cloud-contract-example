@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.cloud.contract.verifier.messaging.boot.AutoConfigureMessageVerifier;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -17,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
         "server.port=0"
 }
 )
-@AutoConfigureMessageVerifier
+
 public abstract class BaseClass {
 
     @LocalServerPort

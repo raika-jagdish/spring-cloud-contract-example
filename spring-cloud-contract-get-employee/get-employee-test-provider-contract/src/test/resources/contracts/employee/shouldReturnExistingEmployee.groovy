@@ -13,8 +13,7 @@ Contract.make {
         urlPath($(
                 consumer(regex("/employee-management/employee/[1-9][0-9]{0,}"))
                 , producer("/employee-management/employee/1234567890")
-        )){
-        }
+        ))
 
         headers {
             contentType(applicationJson())
