@@ -3,9 +3,9 @@ package com.jd.spring.cloud.contract.get.consumer;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import io.restassured.RestAssured;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +16,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
 import static com.toomuchcoding.jsonassert.JsonAssertion.assertThatJson;
@@ -25,7 +25,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(
         classes = ConsumeGetEmployeeUsingStubTest.AutoConfig.class,
         webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -39,8 +39,8 @@ public class ConsumeGetEmployeeUsingStubTest {
 
     private String baseURL=null;
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
 
         // expect: 'WireMocks are running'
         then(stubFinder.findStubUrl("com.jd.spring", "get-employee-test-provider-contract")).isNotNull();

@@ -1,14 +1,14 @@
 package com.jd.spring.cloud.contract.get;
 
 import io.restassured.RestAssured;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
         , properties = {
@@ -28,8 +28,8 @@ public abstract class BaseClass {
     @Value("${app.employeeBasePath:/employee-management/employee}")
     String employeeBasePath;
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         RestAssured.useRelaxedHTTPSValidation();
         RestAssured.baseURI = employeeBaseURI;
         if (RestAssured.baseURI.contains("localhost")) {

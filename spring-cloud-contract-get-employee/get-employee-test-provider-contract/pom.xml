@@ -25,10 +25,6 @@
             <artifactId>spring-cloud-starter-contract-verifier</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.jd.spring</groupId>
             <artifactId>get-employee-application</artifactId>
         </dependency>
@@ -38,6 +34,7 @@
             <plugin>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-contract-maven-plugin</artifactId>
+                <version>4.1.4</version>
                 <extensions>true</extensions>
                 <configuration>
                     <baseClassForTests>com.jd.spring.cloud.contract.get.BaseClass</baseClassForTests>

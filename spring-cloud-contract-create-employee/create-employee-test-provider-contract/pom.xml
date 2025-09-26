@@ -12,6 +12,10 @@
 
     <groupId>com.jd.spring</groupId>
     <artifactId>create-employee-test-provider-contract</artifactId>
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -24,11 +28,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.jd.spring</groupId>
             <artifactId>create-employee-application</artifactId>
             <scope>test</scope>
@@ -38,12 +37,17 @@
             <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-contract-maven-plugin</artifactId>
+                <version>4.1.4</version>
                 <extensions>true</extensions>
                 <configuration>
                     <baseClassForTests>com.jd.spring.cloud.contract.create.BaseClass</baseClassForTests>
